@@ -15,3 +15,4 @@ uv.lock
 .DS_Store
 python/src/aitdp/_bundled_rules/
 python/src/aitdp/_schema/
+LAUNCH-POSTS.md
