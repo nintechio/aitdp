@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="AITDP — AI Threat Detection Protocol">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111c33"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="300" rx="16" fill="url(#bg)"/>
+  <g stroke="#1f2b47" stroke-width="1">
+    <path d="M0 60H1200M0 120H1200M0 180H1200M0 240H1200"/>
+    <path d="M150 0V300M300 0V300M450 0V300M600 0V300M750 0V300M900 0V300M1050 0V300"/>
+  </g>
+  <g transform="translate(80 78)">
+    <path d="M72 0 L144 28 V88 C144 130 112 160 72 176 C32 160 0 130 0 88 V28 Z" fill="url(#accent)" opacity="0.95"/>
+    <path d="M72 18 L128 40 V88 C128 120 104 143 72 156 C40 143 16 120 16 88 V40 Z" fill="#0b1220"/>
+    <path d="M46 90 L64 108 L100 66" fill="none" stroke="url(#accent)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="270" y="128" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="72" font-weight="800" fill="#f8fafc" letter-spacing="-2">AITDP</text>
+  <text x="270" y="176" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="30" font-weight="600" fill="url(#accent)">AI Threat Detection Protocol</text>
+  <text x="270" y="222" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="20" fill="#94a3b8">Open spec · community ruleset · reference SDK — for LLM apps and AI agents</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#cbd5e1">
+    <rect x="270" y="244" width="420" height="34" rx="8" fill="#0f172a" stroke="#1e293b"/>
+    <text x="286" y="266"><tspan fill="#60a5fa">$</tspan> pip install aitdp <tspan fill="#475569">&amp;&amp;</tspan> aitdp scan "…"</text>
+  </g>
+</svg>

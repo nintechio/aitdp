@@ -1,0 +1,26 @@
+id: AITDP-TOOL-004
+title: SQL injection / destructive SQL in tool arguments
+category: tool_abuse
+severity: high
+confidence: 0.75
+stages: [tool_input, model_output, user_input]
+description: >
+  Destructive DDL/DML or classic SQL injection payloads in database tool
+  arguments or generated queries.
+references:
+  owasp_llm: [LLM06, LLM05]
+  cwe: [CWE-89]
+recommended_action: require_human
+patterns:
+  - regex: '(?i)\b(drop\s+(table|database|schema)|truncate\s+table|delete\s+from\s+\w+\s*;?\s*$|delete\s+from\s+\w+\s+where\s+1\s*=\s*1)'
+  - regex: '(?i)(''|")\s*(or|and)\s+(''|")?\s*1\s*=\s*1|(''|")\s*or\s+(''|")[a-z]+(''|")\s*=\s*(''|")[a-z]+|;\s*--\s*$|\bunion\s+(all\s+)?select\b'
+tests:
+  match:
+    - "DROP TABLE users;"
+    - "SELECT * FROM users WHERE name = '' OR 1=1"
+    - "1' UNION SELECT username, password FROM users--"
+    - "DELETE FROM orders"
+  no_match:
+    - "SELECT id, name FROM users WHERE id = 42"
+    - "DELETE FROM sessions WHERE expires_at < NOW()"
+tags: [tool-abuse, sql]

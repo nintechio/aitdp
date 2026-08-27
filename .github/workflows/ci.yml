@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: uv pip install --system -e "python[dev]"
+      - name: Lint
+        run: ruff check python
+      - name: Format check
+        run: ruff format --check python
+      - name: Tests
+        run: pytest python/tests --cov=aitdp --cov-report=term-missing
+      - name: Rule self-tests
+        run: aitdp rules test
+      - name: Rule schema validation
+        run: aitdp rules validate
+      - name: Benchmark smoke
+        run: python benchmarks/run.py
+
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv build python
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: python/dist/*

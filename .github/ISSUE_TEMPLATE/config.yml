@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📜 Spec discussion
+    url: https://github.com/nintechio/aitdp/discussions
+    about: Propose changes to the protocol itself

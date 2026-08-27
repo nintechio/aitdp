@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aitdp.dev/schema/0.1/rule.schema.json",
+  "title": "AITDP Detection Rule",
+  "description": "A declarative detection rule executed by AITDP rule-based detectors (spec v0.1 §5).",
+  "type": "object",
+  "required": ["id", "title", "category", "severity", "stages", "patterns"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9]*-[A-Z]+-\\d{3,}$" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "description": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": [
+        "prompt_injection", "jailbreak", "sensitive_data_leak", "data_exfiltration",
+        "tool_abuse", "excessive_agency", "insecure_output", "obfuscation",
+        "supply_chain", "resource_abuse", "policy_violation", "other"
+      ]
+    },
+    "severity": { "type": "string", "enum": ["info", "low", "medium", "high", "critical"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.7 },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "anyOf": [
+          { "enum": ["system_prompt", "user_input", "retrieved_content", "tool_input", "tool_output", "model_output", "agent_message"] },
+          { "pattern": "^x-[a-z0-9_-]+$" }
+        ]
+      }
+    },
+    "references": {
+      "type": "object",
+      "properties": {
+        "owasp_llm": { "type": "array", "items": { "type": "string", "pattern": "^LLM\\d{2}$" } },
+        "mitre_atlas": { "type": "array", "items": { "type": "string", "pattern": "^AML\\.[A-Z]+\\d{4}(\\.\\d{3})?$" } },
+        "cwe": { "type": "array", "items": { "type": "string", "pattern": "^CWE-\\d+$" } },
+        "custom": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "recommended_action": { "type": "string", "enum": ["allow", "flag", "sanitize", "block", "require_human"], "default": "flag" },
+    "match": { "type": "string", "enum": ["any", "all"], "default": "any" },
+    "patterns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "oneOf": [
+          { "required": ["regex"], "properties": { "regex": { "type": "string", "minLength": 1 }, "note": { "type": "string" } } },
+          { "required": ["keywords"], "properties": { "keywords": { "type": "array", "minItems": 1, "items": { "type": "string" } }, "note": { "type": "string" } } }
+        ]
+      }
+    },
+    "tests": {
+      "type": "object",
+      "properties": {
+        "match": { "type": "array", "items": { "type": "string" } },
+        "no_match": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "author": { "type": "string" },
+    "enabled": { "type": "boolean", "default": true }
+  },
+  "additionalProperties": false
+}

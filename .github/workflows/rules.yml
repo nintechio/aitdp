@@ -1,0 +1,24 @@
+name: Rules
+
+# Fast, focused check that runs whenever a rule changes — contributors adding a
+# rule get feedback in under a minute.
+on:
+  pull_request:
+    paths: ["rules/**", "schema/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: uv pip install --system -e "python[dev]"
+      - run: aitdp rules validate
+      - run: aitdp rules test
+      - run: pytest python/tests/test_rules.py

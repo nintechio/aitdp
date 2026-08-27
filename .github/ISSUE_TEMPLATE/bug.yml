@@ -1,0 +1,20 @@
+name: "🐛 Bug report"
+description: Something in the SDK or CLI is broken
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      render: python
+  - type: input
+    id: version
+    attributes:
+      label: aitdp version / Python version
+      placeholder: "aitdp 0.1.0 · Python 3.12"

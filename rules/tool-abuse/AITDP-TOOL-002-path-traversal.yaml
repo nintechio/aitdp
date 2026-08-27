@@ -1,0 +1,26 @@
+id: AITDP-TOOL-002
+title: Path traversal in tool arguments
+category: tool_abuse
+severity: high
+confidence: 0.8
+stages: [tool_input, user_input, retrieved_content]
+description: >
+  Directory traversal sequences or access to sensitive system paths in file-tool
+  arguments.
+references:
+  owasp_llm: [LLM06]
+  mitre_atlas: [AML.T0053]
+  cwe: [CWE-22]
+recommended_action: block
+patterns:
+  - regex: '(\.\./){2,}|(\.\.\\){2,}|%2e%2e%2f|%2e%2e/|\.\.%2f'
+  - regex: '(?i)(^|[\s"''=])(/etc/(shadow|passwd|sudoers)|/proc/self/environ|/root/\.ssh|C:\\Windows\\System32\\config)'
+tests:
+  match:
+    - "read_file(path='../../../../etc/passwd')"
+    - "open /etc/shadow"
+    - "GET /files?name=..%2f..%2f..%2fetc%2fpasswd"
+  no_match:
+    - "read_file(path='./docs/README.md')"
+    - "cd ../src && ls"
+tags: [tool-abuse, filesystem]

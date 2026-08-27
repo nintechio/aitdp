@@ -1,0 +1,36 @@
+name: "🛡️ New detection rule"
+description: Propose a new AITDP detection rule
+labels: ["rule", "good first issue"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Rule title
+      placeholder: "e.g. Prompt injection via fake XML tags"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options: [prompt_injection, jailbreak, sensitive_data_leak, data_exfiltration, tool_abuse, excessive_agency, insecure_output, obfuscation, supply_chain, resource_abuse, policy_violation, other]
+    validations:
+      required: true
+  - type: textarea
+    id: samples
+    attributes:
+      label: Samples that SHOULD match
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: benign
+    attributes:
+      label: Samples that should NOT match
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: refs
+    attributes:
+      label: References (OWASP LLM / MITRE ATLAS / write-ups)
