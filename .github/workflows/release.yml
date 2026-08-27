@@ -6,10 +6,9 @@ on:
 
 permissions:
   contents: write
-  id-token: write   # PyPI trusted publishing — no API token needed
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,15 +23,38 @@ jobs:
           aitdp rules test
       - name: Build
         run: uv build python
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: python/dist/*
       - name: Create GitHub release with artifacts
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ github.ref_name }}" python/dist/* --generate-notes --verify-tag
-      - name: Publish to PyPI
-        # Flip the repository variable PYPI_PUBLISH to "true" once trusted publishing
-        # is configured at https://pypi.org/manage/account/publishing/ (owner: nintechio,
-        # repo: aitdp, workflow: release.yml, environment: pypi).
-        if: vars.PYPI_PUBLISH == 'true'
-        uses: pypa/gh-action-pypi-publish@release/v1
+        run: |
+          tag="${{ github.ref_name }}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" python/dist/* --clobber
+          else
+            gh release create "$tag" python/dist/* --generate-notes --verify-tag
+          fi
+
+  publish:
+    # Trusted publishing: configured at https://pypi.org/manage/account/publishing/
+    # (owner nintechio, repo aitdp, workflow release.yml, environment pypi).
+    # Gated on the repository variable PYPI_PUBLISH == "true".
+    needs: build
+    if: vars.PYPI_PUBLISH == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/aitdp/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
         with:
-          packages-dir: python/dist
+          name: dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
