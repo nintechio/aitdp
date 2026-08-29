@@ -214,6 +214,7 @@ tests:
 | Family | Rules | Covers |
 |---|---|---|
 | `INJ` | 3 | instruction override, injected instructions, prompt extraction |
+| `RAG` | 3 | authority override, citation manipulation, commercial steering |
 | `JB` | 2 | persona/DAN jailbreaks, hypothetical framing |
 | `EXF` / `LEAK` | 3 | markdown beacons, "send data to…", credential formats |
 | `TOOL` | 4 | shell RCE, path traversal, SSRF/metadata, SQL injection |
