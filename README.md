@@ -13,7 +13,7 @@ Prompt injection · Jailbreaks · Data exfiltration · Secret leakage · Tool ab
 [![Python](https://img.shields.io/pypi/pyversions/aitdp.svg)](https://pypi.org/project/aitdp/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Spec](https://img.shields.io/badge/spec-v0.1-purple.svg)](SPEC.md)
-[![Rules](https://img.shields.io/badge/rules-15-green.svg)](rules/)
+[![Rules](https://img.shields.io/badge/rules-18-green.svg)](rules/)
 
 [Spec](SPEC.md) · [Quickstart](#quickstart) · [Rules](rules/) · [Examples](examples/) · [Contributing](CONTRIBUTING.md)
 
@@ -219,6 +219,7 @@ tests:
 | `TOOL` | 4 | shell RCE, path traversal, SSRF/metadata, SQL injection |
 | `OBF` | 2 | invisible Unicode, encoded payloads |
 | `OUT` | 1 | script tags / event handlers (XSS via LLM) |
+| `AGT` | 3 | role escalation, approval bypass, safety-control disablement |
 
 Every rule is executed against pathological input in CI to rule out ReDoS.
 
