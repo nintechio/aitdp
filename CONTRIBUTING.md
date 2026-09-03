@@ -9,7 +9,7 @@ Rules live in [`rules/`](rules/) as YAML. This is the easiest and most valuable
 contribution — every rule protects every user of the protocol.
 
 1. Copy an existing rule, e.g. `rules/injection/AITDP-INJ-001-instruction-override.yaml`.
-2. Pick the next free ID for the family (`INJ`, `JB`, `EXF`, `LEAK`, `TOOL`, `OBF`, `OUT`, …).
+2. Pick the next free ID for the family (`INJ`, `JB`, `EXF`, `LEAK`, `TOOL`, `OBF`, `OUT`, `RAG`, …).
 3. Fill in `patterns`, at least **3 `tests.match`** and **2 `tests.no_match`** samples, and
    `references` (OWASP LLM / MITRE ATLAS / CWE).
 4. Run:
